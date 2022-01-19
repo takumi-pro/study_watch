@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "webpack",
-    "format": "npx prettier --write app.ts",
-    "lint": "npx eslint --fix app.ts",
+    "format": "npx prettier --write src/*.ts",
+    "lint": "npx eslint --fix src/*.ts",
     "fix": "npm run format && npm run lint",
     "serve": "webpack serve --open"
   },

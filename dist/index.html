@@ -5,10 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .timer, .button_container {
+            display: flex;
+            column-gap: 0.3rem;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
-    <p>hello</p>
-    <button>change</button>
+    <div class="container">
+        <div class="timer">
+            <span class="hour">00</span>
+            :
+            <span class="minute">00</span>
+            :
+            <span class="second">00</span>
+            :
+            <span class="msecond">000</span>
+        </div>
+        <div class="button_container">
+            <button class="start">start</button>
+            <button class="stop">stop</button>
+            <button class="reset">reset</button>
+        </div>
+    </div>
     <script src="./bundle.js"></script>
 </body>
 </html>
