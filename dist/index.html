@@ -11,6 +11,18 @@
             column-gap: 0.3rem;
             justify-content: center;
         }
+        .toggle {
+            position: relative;
+            width: 45px;
+        }
+        .toggle_button {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .stop {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -25,8 +37,10 @@
             <span class="msecond">000</span>
         </div>
         <div class="button_container">
-            <button class="start">start</button>
-            <button class="stop">stop</button>
+            <div class="toggle">
+                <button class="toggle_button start">start</button>
+                <button class="toggle_button stop">stop</button>
+            </div>
             <button class="reset">reset</button>
         </div>
     </div>

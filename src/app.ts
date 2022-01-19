@@ -13,20 +13,23 @@ const MSEC_HOUR = MSEC_MINUTE * 60
 
 let startTime: number
 let timeoutId: number
-let timeToStop: number = 0
+let timeToStop = 0
+let isStart = false
 
 function countUp() {
     timeoutId = window.setTimeout(() => {
         const nowTime = Date.now()
 
-        const difTime: number = nowTime - startTime
+        const difTime: number = nowTime - startTime + timeToStop
         const minute_num: number = Math.floor(difTime / MSEC_MINUTE)
-        const second_num: number = Math.floor(difTime % MSEC_MINUTE / MSEC_SEC)
+        const second_num: number = Math.floor(
+            (difTime % MSEC_MINUTE) / MSEC_SEC
+        )
         const msecond_num: number = Math.floor(difTime % 1000)
-        
-        const minute: string = ('0'+String(minute_num)).slice(-2)
-        const second: string = ('0'+String(second_num)).slice(-2)
-        const msecond: string = ('0'+String(msecond_num)).slice(-3)
+
+        const minute: string = ('0' + String(minute_num)).slice(-2)
+        const second: string = ('0' + String(second_num)).slice(-2)
+        const msecond: string = ('00' + String(msecond_num)).slice(-3)
 
         minuteDisplay.textContent = String(minute)
         secondDisplay.textContent = String(second)
@@ -36,14 +39,40 @@ function countUp() {
     }, 10)
 }
 
+function reset() {
+    if (isStart) return
+
+    timeToStop = 0
+    minuteDisplay.textContent = '00'
+    secondDisplay.textContent = '00'
+    msecondDisplay.textContent = '000'
+}
+
 function start() {
+    if (isStart) return
+
+    isStart = true
     startTime = Date.now()
     countUp()
+
+    startBtn.style.display = 'none'
+    stopBtn.style.display = 'block'
+    resetBtn.disabled = true
 }
 
 function stop() {
+    if (!isStart) return
+
+    isStart = false
     clearTimeout(timeoutId)
+    timeToStop += Date.now() - startTime
+
+    startBtn.style.display = 'block'
+    stopBtn.style.display = 'none'
+    resetBtn.disabled = false
 }
 
 startBtn.addEventListener('click', start)
 stopBtn.addEventListener('click', stop)
+resetBtn.addEventListener('click', reset)
+
