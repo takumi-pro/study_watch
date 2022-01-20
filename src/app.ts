@@ -1,111 +1,66 @@
+// html要素の取得
 const startBtn = document.querySelector('.start') as HTMLButtonElement
 const stopBtn = document.querySelector('.stop') as HTMLButtonElement
 const resetBtn = document.querySelector('.reset') as HTMLButtonElement
 const rapBtn = document.querySelector('.rap') as HTMLButtonElement
-const rapTimeElementWrap = document.querySelector('.rap_time') as HTMLDivElement
-
-const hourDisplay = document.querySelector('.hour') as HTMLSpanElement
-const minuteDisplay = document.querySelector('.minute') as HTMLSpanElement
-const secondDisplay = document.querySelector('.second') as HTMLSpanElement
-const msecondDisplay = document.querySelector('.msecond') as HTMLSpanElement
-
-const MSEC_SEC = 1000
-const MSEC_MINUTE = MSEC_SEC * 60
-const MSEC_HOUR = MSEC_MINUTE * 60
+const recordBtn = document.querySelector('.record') as HTMLButtonElement
+const timer = document.querySelector('.timer') as HTMLDivElement
 
 let startTime: number
-let rapStartTime: number
-let timeoutId: number
-let previousRapTime: number
-let timeToStop = 0
-let isStart = false
-let isRap = false
+let intervalId: number
+let timeToStop: number = 0
 
-if (!isStart) {
-    rapBtn.disabled = true
+function countUp(difTime: number) {
+    let hour = difTime / 360000
+    let min = (difTime % 360000) / 60000
+    let sec = difTime / 1000
+    let msec = difTime % 1000
+
+    let hh = Math.floor(hour)
+    let mm = Math.floor(min)
+    let ss = Math.floor(sec)
+    let ms = Math.floor(msec)
+
+    let formatedHH = hh.toString().padStart(2, '0')
+    let formatedMM = mm.toString().padStart(2, '0')
+    let formatedSS = ss.toString().padStart(2, '0')
+    let formatedMS = ms.toString().padStart(3, '0')
+
+    return `${formatedHH}:${formatedMM}:${formatedSS}:${formatedMS}`
 }
 
-function countUp() {
-    timeoutId = window.setTimeout(() => {
-        const nowTime = Date.now()
-
-        const difTime: number = nowTime - startTime + timeToStop
-        const minute_num: number = Math.floor(difTime / MSEC_MINUTE)
-        const second_num: number = Math.floor(
-            (difTime % MSEC_MINUTE) / MSEC_SEC
-        )
-        const msecond_num: number = Math.floor(difTime % 1000)
-
-        const minute: string = ('0' + String(minute_num)).slice(-2)
-        const second: string = ('0' + String(second_num)).slice(-2)
-        const msecond: string = ('00' + String(msecond_num)).slice(-3)
-
-        minuteDisplay.textContent = String(minute)
-        secondDisplay.textContent = String(second)
-        msecondDisplay.textContent = String(msecond)
-
-        countUp()
-    }, 10)
+function showButton(showBtn: string) {
+    let buttonToShow = (showBtn === 'START') ? startBtn : stopBtn
+    let buttonToHide = (showBtn === 'START') ? stopBtn : startBtn
+    buttonToShow.style.display = 'block'
+    buttonToHide.style.display = 'none'
 }
 
-function reset() {
-    if (isStart) return
-
-    timeToStop = 0
-    minuteDisplay.textContent = '00'
-    secondDisplay.textContent = '00'
-    msecondDisplay.textContent = '000'
+function print(txt: string) {
+    timer.innerHTML = txt
 }
 
 function start() {
-    if (isStart) return
-
-    isStart = true
-
+    showButton('STOP')
     startTime = Date.now()
-    countUp()
-
-    startBtn.style.display = 'none'
-    stopBtn.style.display = 'block'
-    rapBtn.disabled = false
-    resetBtn.disabled = true
+    intervalId = window.setInterval(() => {
+        let difTime = Date.now() - startTime + timeToStop
+        print(countUp(difTime))
+    }, 10)
 }
 
 function stop() {
-    if (!isStart) return
-
-    isStart = false
-
-    clearTimeout(timeoutId)
+    showButton('START')
     timeToStop += Date.now() - startTime
-
-    startBtn.style.display = 'block'
-    stopBtn.style.display = 'none'
-    rapBtn.disabled = true
-    resetBtn.disabled = false
+    clearInterval(intervalId)
 }
 
-function rap() {
-    rapStartTime = Date.now()
-
-    if (!isRap) {
-        let para = document.createElement('p')
-        let content = document.createTextNode(String(rapStartTime - startTime))
-        para.appendChild(content)
-        rapTimeElementWrap.appendChild(para)
-    } else {
-        let para = document.createElement('p')
-        let content = document.createTextNode(String(rapStartTime - previousRapTime))
-        para.appendChild(content)
-        rapTimeElementWrap.appendChild(para)
-    }
-
-    isRap = true
-    previousRapTime = rapStartTime
+function reset() {
+    timeToStop = 0
+    print('00:00:00:000')
 }
 
 startBtn.addEventListener('click', start)
 stopBtn.addEventListener('click', stop)
-rapBtn.addEventListener('click', rap)
 resetBtn.addEventListener('click', reset)
 
