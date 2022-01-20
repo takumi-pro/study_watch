@@ -23,11 +23,16 @@
         .stop {
             display: none;
         }
+        .subject {
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="subject">
+            <button class="btn">update</button>
             <input type="text" class="subject_name">
         </div>
         <div class="timer">00:00:00:000</div>
@@ -41,6 +46,7 @@
         </div>
         <div class="rap_time"></div>
         <div class="record_time"></div>
+        <div id="chart_area"></div>
     </div>
     <script src="./bundle.js"></script>
 </body>
