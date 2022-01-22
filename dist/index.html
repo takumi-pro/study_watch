@@ -27,6 +27,13 @@
             display: flex;
             justify-content: center;
         }
+        .record_area p {
+            text-align: center;
+        }
+        .record_container {
+            display: flex;
+            justify-content: space-around;
+        }
     </style>
 </head>
 <body>
@@ -42,10 +49,15 @@
             </div>
             <button class="reset">reset</button>
             <button class="record">record</button>
+            <button class="clear">clear data</button>
         </div>
         <div class="rap_time"></div>
-        <div class="record_time"></div>
-        <div id="chart_area"></div>
+        <div class="record_container">
+            <ul class="record_area"></ul>
+            <div>
+                <div id="chart_area"></div>
+            </div>
+        </div>
     </div>
     <script src="./bundle.js"></script>
 </body>
