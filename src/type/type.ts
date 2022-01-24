@@ -6,6 +6,7 @@ export type timerCountType = {
 }
 
 export type studyData = {
+    id: number,
     subject: string;
     studyTime: number;
 }

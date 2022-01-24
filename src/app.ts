@@ -112,7 +112,6 @@ function print(txt: string) {
     timer.innerHTML = txt
 }
 
-
 function buttonDisabled(isDisabled: boolean): void {
     startBtn.disabled = isDisabled
     stopBtn.disabled = isDisabled
@@ -196,19 +195,44 @@ function updateRecord() {
     recordArea.innerHTML = ''
     JSON.parse(studyDataList).map((studyData: studyData, index: number) => {
         const list = document.createElement('li')
-        list.textContent = `${studyData.subject} : ${studyData.studyTime}`
-        recordArea.append(list)
+        const p = document.createElement('p')
+        const button = document.createElement('button')
+
+        button.classList.add('remove_button')
+        p.textContent = `${studyData.id} : ${studyData.subject} : ${studyData.studyTime}`
+        button.textContent = '削除'
+        list.appendChild(p)
+        list.appendChild(button)
+        recordArea.appendChild(list)
 
         columnChart.update(index, studyData.subject, studyData.studyTime * 5)
         columnChart.redraw()
     })
 }
 
+function determinId() {
+    const studyDataListJson = localStorage.getItem('study_data')
+    if (!studyDataListJson) {
+        return 1
+    }
+
+    const studyDataList = JSON.parse(studyDataListJson)
+    return studyDataList.slice(-1)[0].id + 1
+}
+
 function record() {
     let { mm, ss } = timerCount
     let data = {
+        id: determinId(),
         subject: inputText,
         studyTime: mm*60 + ss
+    }
+    if (isStart) {
+        return
+    }
+    if (judgeRecordPush()) {
+        alert('既に登録済みです')
+        return
     }
     if (data.studyTime === 0) {
         alert('時間が0です')
