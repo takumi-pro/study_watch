@@ -1,6 +1,9 @@
+import { Client } from '@notionhq/client'
+import axios from 'axios'
+
 import { timerCountType, studyData } from './type/type'
 import { chart } from './chart/chart'
-import { Chart } from './class/chart'
+import { Chart } from './class/Chart'
 
 // 要素の取得
 const startBtn = document.querySelector('.start') as HTMLButtonElement
@@ -37,17 +40,24 @@ window.addEventListener('load', () => {
     let studyDataList = JSON.parse(studyDataListJson)
     chart.series = []
     studyDataList.map((studyData: studyData, index: number) => {
-        const list = document.createElement('li')
-        list.textContent = `${studyData.subject} : ${studyData.studyTime}`
-        recordArea.append(list)
-        
-        chart.addSeries({
-            name: studyData.subject,
-            data: [studyData.studyTime*5]
-        })
-        chart.redraw()
+        createRecordHtmlElement(studyData)
+        columnChart.addSeries(studyData.subject, studyData.studyTime*5)
+        columnChart.redraw()
     })
 })
+
+function createRecordHtmlElement(studyData: studyData) {
+    const list = document.createElement('li')
+    const p = document.createElement('p')
+    const button = document.createElement('button')
+
+    button.classList.add('remove_button')
+    p.textContent = `${studyData.id} : ${studyData.subject} : ${studyData.studyTime}`
+    button.textContent = '削除'
+    list.appendChild(p)
+    list.appendChild(button)
+    recordArea.appendChild(list)
+}
 
 function seriesIndex() {
     let seriesIndex = 0
@@ -194,17 +204,7 @@ function updateRecord() {
 
     recordArea.innerHTML = ''
     JSON.parse(studyDataList).map((studyData: studyData, index: number) => {
-        const list = document.createElement('li')
-        const p = document.createElement('p')
-        const button = document.createElement('button')
-
-        button.classList.add('remove_button')
-        p.textContent = `${studyData.id} : ${studyData.subject} : ${studyData.studyTime}`
-        button.textContent = '削除'
-        list.appendChild(p)
-        list.appendChild(button)
-        recordArea.appendChild(list)
-
+        createRecordHtmlElement(studyData)
         columnChart.update(index, studyData.subject, studyData.studyTime * 5)
         columnChart.redraw()
     })
@@ -254,7 +254,6 @@ function record() {
     timerInit()
     inputInit()
     print('00:00:00:000')
-    // resetBtn.disabled = true
 }
 
 inputArea.addEventListener('input', input)
@@ -262,3 +261,19 @@ startBtn.addEventListener('click', start)
 stopBtn.addEventListener('click', stop)
 resetBtn.addEventListener('click', reset)
 recordBtn.addEventListener('click', record)
+
+// notion post
+const post = document.querySelector('.post') as HTMLButtonElement
+const key = 'secret_PF5H0dtfr1Z03DnlE0HNVntp7uXkcI3jMyBKDjvyXdh'
+const databaseId = '8bb6dbf8b88a40bebb04d2b1d7740cd4'
+const notion = new Client({ auth: key })
+
+post.addEventListener('click', async () => {
+    const response = await axios.post('http://localhost:8080/api/post')
+    try {
+        console.log(response.data)
+    } catch (error: any) {
+        console.log(error)
+    }
+    console.log()
+})
