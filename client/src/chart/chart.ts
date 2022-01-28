@@ -4,7 +4,7 @@ import data from 'highcharts/modules/data.js'
 ex(Highcharts)
 data(Highcharts)
 
-let date = new Date()
+const date = new Date()
 
 export const chart = new (Highcharts as any).chart({
     chart: {
@@ -12,7 +12,7 @@ export const chart = new (Highcharts as any).chart({
         type: 'column',
     },
     xAxis: {
-        categories: [`${date.getMonth()+1}月${date.getDate()}日`],
+        categories: [`${date.getMonth() + 1}月${date.getDate()}日`],
     },
     yAxis: {
         softMax: 110,
@@ -20,7 +20,5 @@ export const chart = new (Highcharts as any).chart({
             text: 'number',
         },
     },
-    series: [
-        { name: '', data: [0] }
-    ],
+    series: [{ name: '', data: [0] }],
 })

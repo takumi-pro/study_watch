@@ -2,10 +2,10 @@ const path = require('path')
 
 module.exports = {
     mode: 'development',
-    entry: './src/client/app.ts',
+    entry: './src/app.ts',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname+'/../', 'dist'),
     },
     module: {
         rules: [
@@ -21,7 +21,7 @@ module.exports = {
     },
     devServer: {
         static: {
-            directory: path.resolve(__dirname, 'dist')
+            directory: path.resolve(__dirname+'/../', 'dist')
         },
         compress: true,
         hot: true,

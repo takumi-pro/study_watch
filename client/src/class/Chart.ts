@@ -1,5 +1,5 @@
 export class Chart {
-    private chart: any;
+    private chart: any
     private lastSeriesIndex: number
 
     constructor(chart: any) {
@@ -21,17 +21,18 @@ export class Chart {
     addSeries(name: string, data: number) {
         this.chart.addSeries({
             name: name,
-            data: [data]
+            data: [data],
         })
     }
 
     update(index: number, name: string, data: number) {
-        this.chart.series[index].update({
-            name: name,
-            data: [data],
-        },
-        false
-    )
+        this.chart.series[index].update(
+            {
+                name: name,
+                data: [data],
+            },
+            false
+        )
     }
 
     redraw() {

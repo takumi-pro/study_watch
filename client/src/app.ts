@@ -17,19 +17,19 @@ const timer = document.querySelector('.timer') as HTMLDivElement
 
 const columnChart = new Chart(chart)
 
-let isStart: boolean = false
+let isStart = false
 let startTime: number
 let intervalId: number
 let graphIntervalId: number
-let timeToStop: number = 0
-let inputText: string = ''
-let timerCount: timerCountType = {
+let timeToStop = 0
+let inputText = ''
+const timerCount: timerCountType = {
     hh: 0,
     mm: 0,
     ss: 0,
-    ms: 0
+    ms: 0,
 }
-let totalMinute: number = 0
+const totalMinute = 0
 
 window.addEventListener('load', () => {
     const studyDataListJson = localStorage.getItem('study_data')
@@ -37,11 +37,11 @@ window.addEventListener('load', () => {
 
     recordArea.innerHTML = ''
 
-    let studyDataList = JSON.parse(studyDataListJson)
+    const studyDataList = JSON.parse(studyDataListJson)
     chart.series = []
     studyDataList.map((studyData: studyData, index: number) => {
         createRecordHtmlElement(studyData)
-        columnChart.addSeries(studyData.subject, studyData.studyTime*5)
+        columnChart.addSeries(studyData.subject, studyData.studyTime * 5)
         columnChart.redraw()
     })
 })
@@ -130,12 +130,12 @@ function buttonDisabled(isDisabled: boolean): void {
 }
 
 function judgeRecordPush(): boolean {
-    let studyDataListJson = localStorage.getItem('study_data') as string
+    const studyDataListJson = localStorage.getItem('study_data') as string
     if (!studyDataListJson) return false
 
-    let studyDataList = JSON.parse(studyDataListJson)
-    let studyDataListLength = studyDataList.length
-    let chartSeriesLength = chart.series.length
+    const studyDataList = JSON.parse(studyDataListJson)
+    const studyDataListLength = studyDataList.length
+    const chartSeriesLength = chart.series.length
     if (studyDataListLength === chartSeriesLength) {
         return true
     }
@@ -145,7 +145,7 @@ function judgeRecordPush(): boolean {
 function start(): void {
     showButton('STOP')
 
-    if (judgeRecordPush()){
+    if (judgeRecordPush()) {
         columnChart.addSeries(inputText, 0)
         columnChart.redraw()
     }
@@ -221,11 +221,11 @@ function determinId() {
 }
 
 function record() {
-    let { mm, ss } = timerCount
-    let data = {
+    const { mm, ss } = timerCount
+    const data = {
         id: determinId(),
         subject: inputText,
-        studyTime: mm*60 + ss
+        studyTime: mm * 60 + ss,
     }
     if (isStart) {
         return
@@ -242,10 +242,10 @@ function record() {
     if (!localStorage.getItem('study_data')) {
         localStorage.setItem('study_data', JSON.stringify([data]))
     } else {
-        let dataListJson = localStorage.getItem('study_data')
+        const dataListJson = localStorage.getItem('study_data')
         if (!dataListJson) return
 
-        let dataList = JSON.parse(dataListJson)
+        const dataList = JSON.parse(dataListJson)
         dataList.push(data)
         localStorage.setItem('study_data', JSON.stringify(dataList))
     }
