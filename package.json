@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "cd server && npm start && cd ../client && npm run serve",
     "prepare": "husky install",
     "pre-commit": "cd server && npm run pre-commit && cd ../client && npm run pre-commit"
   },

@@ -11,6 +11,7 @@ const stopBtn = document.querySelector('.stop') as HTMLButtonElement
 const resetBtn = document.querySelector('.reset') as HTMLButtonElement
 const recordBtn = document.querySelector('.record') as HTMLButtonElement
 const inputArea = document.querySelector('.subject_name') as HTMLInputElement
+const authBtn = document.querySelector('.auth') as HTMLButtonElement
 const recordArea = document.querySelector('.record_area') as HTMLUListElement
 const chartArea = document.querySelector('.chart_area') as HTMLDivElement
 const timer = document.querySelector('.timer') as HTMLDivElement
@@ -256,24 +257,15 @@ function record() {
     print('00:00:00:000')
 }
 
+function notionAuth() {
+    const url =
+        'https://api.notion.com/v1/oauth/authorize?owner=user&client_id=4f1f6973-b66f-47e6-9d04-db94afeebeb4&response_type=code'
+    window.location.href = url
+}
+
 inputArea.addEventListener('input', input)
 startBtn.addEventListener('click', start)
 stopBtn.addEventListener('click', stop)
 resetBtn.addEventListener('click', reset)
 recordBtn.addEventListener('click', record)
-
-// notion post
-const post = document.querySelector('.post') as HTMLButtonElement
-const key = 'secret_PF5H0dtfr1Z03DnlE0HNVntp7uXkcI3jMyBKDjvyXdh'
-const databaseId = '8bb6dbf8b88a40bebb04d2b1d7740cd4'
-const notion = new Client({ auth: key })
-
-post.addEventListener('click', async () => {
-    const response = await axios.post('http://localhost:8080/api/post')
-    try {
-        console.log(response.data)
-    } catch (error: any) {
-        console.log(error)
-    }
-    console.log()
-})
+authBtn.addEventListener('click', notionAuth)
