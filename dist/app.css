@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap');
+/* ============= VARIABLES CSS =========== */
+/* 1rem = 16px */
+:root {
+    --header-height: 62px;
+    --max-width: 1100px;
+    --menu-height: 32px;
+    
+    /* ======== PADDING ======== */
+    --p-1-5: 1.5rem;
+    --p-1: 1rem;
+    --p-0-75: .75rem;
+
+    /* ========= COLORS ========== */
+    --hue: 207;
+    --first-color: hsl(var(--hue), 100%, 62%);
+    --first-color-hover: hsl(var(--hue), 100%, 50%);
+    --first-bg-color: hsl(var(--hue), 100%, 90%);
+    --title-color: hsl(var(--hue), 4%, 10%);
+    --text-color: hsl(var(--hue), 4%, 25%);
+    --bf-color: #fff;
+
+    /* ========== FONT ========== */
+    --body-font: 'M PLUS 1p', sans-serif,'Poppins', sans-serif;
+    --h1-font-size: 1.5rem;
+    --normal-font-size: 1rem;
+    --small-font-size: .9rem;
+    --smaller-font-size: .875rem;
+    --icon-size: 1.3rem;
+
+    /* ========= FONT WEIGHT ========= */
+    --font-medium: 500;
+    --font-semi-bold: 600;
+    --font-bold: 700;
+}
+
+/* ======== BASE ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+body {
+    font-family: var(--body-font);
+    font-size: var(--normal-font-size);
+}
+
+h1 {
+    font-size: var(--h1-font-size);
+    font-weight: var(--font-semi-bold);
+}
+
+.button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all .3s;
+}
+
+.button:hover {
+    transition: all .3s;
+    background: var(--first-color-hover);
+}
+
+/* =========== HEADER ========== */
+.header {
+    width: 100%;
+}
+
+.header__inner {
+    height: var(--header-height);
+    max-width: var(--max-width);
+    padding-left: var(--p-1-5);
+    padding-right: var(--p-1-5);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: var(--title-color);
+    display: flex;
+    align-items: center;
+    column-gap: .6rem;
+    letter-spacing: -1px;
+}
+
+.menu__container {
+    display: flex;
+    column-gap: var(--p-1-5);
+    height: var(--menu-height);
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+}
+
+.menu__link {
+    font-size: var(--normal-font-size);
+    color: var(--text-color);
+    display: inline-flex;
+    align-items: center;
+    column-gap: 0.3rem;
+}
+
+.menu__icon {
+    font-size: var(--icon-size);
+}
+
+.button,.auth {
+    height: 100%;
+    font-size: var(--normal-font-size);
+    color: #fff;
+    background: var(--first-color);
+    padding: 0 0.9rem;
+    border-radius: 4px;
+}
+
+@media screen and (max-width: 575px) {
+    :root {
+        --header-height: 58px;
+        --menu-height: 28px;
+        --padding: .7rem;
+    }
+
+    .pre__active {
+        display: none;
+    }
+
+    .menu__link {
+        content: "";
+    }
+
+    .button,.auth {
+        font-size: var(--smaller-font-size);
+    }
+}

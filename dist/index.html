@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./app.css">
     <title>Document</title>
     <style>
         .timer, .button_container {
@@ -37,24 +38,27 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav class="header_inner">
+    <header class="header">
+        <nav class="header__inner">
             <h1 class="logo">
-                <i class="ri-timer-line"></i>
+                <i class="ri-timer-line logo__icon"></i>
                 STUDY WATCH
             </h1>
-            <ul class="menu_container">
+            <ul class="menu__container">
                 <li class="menu">
-                    <a href="" class="menu_link">使い方</a>
+                    <a href="" class="menu__link">
+                        <i class="ri-pencil-ruler-line menu__icon"></i>
+                        <span class="pre__active">使い方</span>
+                    </a>
                 </li>
                 <li class="menu">
-                    <button class="auth">Log in</button>
+                    <button class="button auth">Log in</button>
                 </li>
             </ul>
         </nav>
     </header>
     <div class="container">
-        <div class="subject">
+        <!-- <div class="subject">
             <input type="text" class="subject_name">
         </div>
         <div class="timer">00:00:00:000</div>
@@ -75,7 +79,7 @@
             <div>
                 <div id="chart_area"></div>
             </div>
-        </div>
+        </div> -->
     </div>
     <script src="./bundle.js"></script>
 </body>
