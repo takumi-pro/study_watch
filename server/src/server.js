@@ -12,8 +12,14 @@ app.use(express.json())
 const notion_key = process.env.NOTION_KEY
 const client_id = process.env.CLIENT_ID
 
-app.get('/api/get', (req, res) => {
-    res.send('hello')
+app.get('/api/get', () => {
+    const notion = new Client({
+        auth: 'secret_PF5H0dtfr1Z03DnlE0HNVntp7uXkcI3jMyBKDjvyXdh',
+    })
+    notion.search().then((res) => {
+        console.log(res)
+        return 'success'
+    })
 })
 
 app.get('/notion/callback', (req, res) => {
@@ -35,11 +41,12 @@ app.get('/notion/callback', (req, res) => {
         .then((response) => {
             const token = response.data.access_token
             const notion = new Client({ auth: token })
+            console.log(response.data)
 
             notion
                 .search()
-                .then((response) => {
-                    console.log(response)
+                .then(() => {
+                    // console.log(response)
                     res.redirect('http://localhost:3000')
                 })
                 .catch((err) => {

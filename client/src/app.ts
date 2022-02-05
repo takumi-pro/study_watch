@@ -1,4 +1,5 @@
-import { Client } from '@notionhq/client'
+// import { Client } from '@notionhq/client'
+import 'remixicon/fonts/remixicon.css'
 import axios from 'axios'
 
 import { timerCountType, studyData } from './type/type'
@@ -12,6 +13,7 @@ const resetBtn = document.querySelector('.reset') as HTMLButtonElement
 const recordBtn = document.querySelector('.record') as HTMLButtonElement
 const inputArea = document.querySelector('.subject_name') as HTMLInputElement
 const authBtn = document.querySelector('.auth') as HTMLButtonElement
+const testBtn = document.querySelector('.test') as HTMLButtonElement
 const recordArea = document.querySelector('.record_area') as HTMLUListElement
 const chartArea = document.querySelector('.chart_area') as HTMLDivElement
 const timer = document.querySelector('.timer') as HTMLDivElement
@@ -269,3 +271,7 @@ stopBtn.addEventListener('click', stop)
 resetBtn.addEventListener('click', reset)
 recordBtn.addEventListener('click', record)
 authBtn.addEventListener('click', notionAuth)
+testBtn.addEventListener('click', async () => {
+    const res = await axios.get('http://localhost:8080/api/get')
+    console.log(res)
+})
