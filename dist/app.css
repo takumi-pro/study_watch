@@ -8,21 +8,33 @@
     
     /* ======== PADDING ======== */
     --p-1-5: 1.5rem;
+    --p-1-2: 1.2rem;
     --p-1: 1rem;
+    --p-0-9: .9rem;
     --p-0-75: .75rem;
+    --p-0-5: .5rem;
+
+    --mb-0-5: .5rem;
+    --mb-0-75: .75rem;
+    --mb-1: 1rem;
+    --mb-1-5: 1.5rem;
+    --mb-2: 2rem;
+    --mb-2-5: 2.5rem;
 
     /* ========= COLORS ========== */
     --hue: 207;
     --first-color: hsl(var(--hue), 100%, 62%);
     --first-color-hover: hsl(var(--hue), 100%, 50%);
-    --first-bg-color: hsl(var(--hue), 100%, 90%);
+    --first-bg-color: hsl(210, 38%, 95%);
     --title-color: hsl(var(--hue), 4%, 10%);
     --text-color: hsl(var(--hue), 4%, 25%);
     --bf-color: #fff;
 
     /* ========== FONT ========== */
     --body-font: 'M PLUS 1p', sans-serif,'Poppins', sans-serif;
+    --big-font-size: 5.5rem;
     --h1-font-size: 1.5rem;
+    --medium-font-size: 1.25rem;
     --normal-font-size: 1rem;
     --small-font-size: .9rem;
     --smaller-font-size: .875rem;
@@ -53,21 +65,28 @@ h1 {
     font-weight: var(--font-semi-bold);
 }
 
+.flex {
+    display: flex;
+}
+
 .button {
     cursor: pointer;
     border: none;
     outline: none;
+    font-size: var(--normal-font-size);
+    padding: 0 var(--p-0-9);
+    border-radius: 4px;
     transition: all .3s;
 }
 
 .button:hover {
     transition: all .3s;
-    background: var(--first-color-hover);
 }
 
 /* =========== HEADER ========== */
 .header {
     width: 100%;
+    /* margin-bottom: var(--mb-1); */
 }
 
 .header__inner {
@@ -87,6 +106,7 @@ h1 {
     align-items: center;
     column-gap: .6rem;
     letter-spacing: -1px;
+    transition: all .3s;
 }
 
 .menu__container {
@@ -112,31 +132,128 @@ h1 {
     font-size: var(--icon-size);
 }
 
-.button,.auth {
+.auth {
     height: 100%;
-    font-size: var(--normal-font-size);
     color: #fff;
     background: var(--first-color);
-    padding: 0 0.9rem;
     border-radius: 4px;
 }
 
+.auth:hover {
+    background: var(--first-color-hover);
+}
+
+
+/* =========== MAIN ============= */
+.main__container {
+    width: 100%;
+}
+
+.main__inner {
+    max-width: var(--max-width);
+    padding-left: var(--p-1-5);
+    padding-right: var(--p-1-5);
+    margin: 0 auto;
+}
+
+.input__container {
+    text-align: center;
+}
+
+.input {
+    border: none;
+    border-bottom: 1px solid hsl(0, 0%, 76%);
+    font-size: 1.1rem;
+    padding: 0.75rem 1.2rem;
+    outline: none;
+    max-width: 450px;
+}
+
+.timer {
+    font-size: var(--big-font-size);
+    color: var(--first-color);
+    align-items: baseline;
+    transition: all .3s;
+}
+
+.timer__ms {
+    font-size: 4rem;
+}
+
+.button__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: .5rem;
+    row-gap: .5rem;
+}
+
+.primary__buttons {
+    column-gap: .5rem;
+}
+
+.tbtn {
+    font-size: var(--medium-font-size);
+    padding: var(--p-0-5) var(--p-1-2);
+}
+
+.primary{
+    color: #fff;
+    background: var(--first-color);
+    height: 48px;
+}
+
+.primary:hover{
+    background: var(--first-color-hover);
+}
+
+.notion {
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    background-color: #fff;
+    height: 48px;
+}
+
+.notion:hover {
+    /* background: var(--first-color-hover); */
+}
+
+
+/* ============== RESPONSIVE ============ */
 @media screen and (max-width: 575px) {
     :root {
         --header-height: 58px;
         --menu-height: 28px;
-        --padding: .7rem;
+        --big-font-size: 4rem;
+
+        /* ========== FONT ========== */
+        --h1-font-size: 1.2rem;
+    }
+
+    /* .button {
+        padding: 0 var(--p-0-5);
+    } */
+
+    /* =========== HEADER ========= */
+    .header__inner, .main__inner {
+        padding-left: var(--p-0-75);
+        padding-right: var(--p-0-75);
     }
 
     .pre__active {
         display: none;
     }
 
-    .menu__link {
-        content: "";
-    }
-
     .button,.auth {
         font-size: var(--smaller-font-size);
+    }
+
+    /* ========== MAIN =========== */
+    .timer__ms {
+        font-size: 2.5rem;
+    }
+
+    .tbtn {
+        height: 40px;
     }
 }
