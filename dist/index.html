@@ -58,7 +58,7 @@
         </nav>
     </header>
     <main class="main__container">
-        <div class="main__inner">
+        <div class="record__container">
             <div class="input__container">
                 <input placeholder="科目を入力" type="text" class="input">
             </div>
@@ -82,8 +82,25 @@
                 </div>
             </div>
         </div>
+        <div class="tab__container">
+            <input class="tab__input" type="radio" id="tab1" name="tab" checked>
+            <label class="tab__label" for="tab1">Features</label>
+            <input class="tab__input" type="radio" id="tab2" name="tab">
+            <label class="tab__label" for="tab2">History</label>
+            <div class="line"></div>
+            <div class="content__container">
+                <div class="content" id="c1">
+                    <h3>Features</h3>
+                    <p>There really are a lot of features.</p>
+                </div>
+                <div class="content" id="c2">
+                    <h3>History</h3>
+                    <p>The project started in 2018 when someone needed something.</p>
+                </div>
+            </div>
+        </div>
     </main>
-    <div class="container">
+    <!-- <div class="container"> -->
         <!-- <div class="subject">
             <input type="text" class="subject_name">
         </div>
@@ -106,7 +123,7 @@
                 <div id="chart_area"></div>
             </div>
         </div> -->
-    </div>
+    <!-- </div> -->
     <script src="./bundle.js"></script>
 </body>
 </html>

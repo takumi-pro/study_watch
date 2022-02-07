@@ -25,9 +25,10 @@
     --hue: 207;
     --first-color: hsl(var(--hue), 100%, 62%);
     --first-color-hover: hsl(var(--hue), 100%, 50%);
-    --first-bg-color: hsl(210, 38%, 95%);
+    --first-bg-color: hsl(207, 38%, 95%);
     --title-color: hsl(var(--hue), 4%, 10%);
     --text-color: hsl(var(--hue), 4%, 25%);
+    --text-color-gray: hsl(var(--hue), 4%, 35%);
     --bf-color: #fff;
 
     /* ========== FONT ========== */
@@ -55,7 +56,12 @@
     text-decoration: none;
 }
 
+html {
+    height: 100%;
+}
+
 body {
+    height: 100%;
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
 }
@@ -144,16 +150,21 @@ h1 {
 }
 
 
-/* =========== MAIN ============= */
+/* =========== RECORD ============= */
 .main__container {
     width: 100%;
+    height: calc(100% - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.2rem;
 }
 
-.main__inner {
+.record__container {
     max-width: var(--max-width);
     padding-left: var(--p-1-5);
     padding-right: var(--p-1-5);
     margin: 0 auto;
+    margin-bottom: var(--mb-1-5);
 }
 
 .input__container {
@@ -214,8 +225,65 @@ h1 {
     height: 48px;
 }
 
-.notion:hover {
-    /* background: var(--first-color-hover); */
+/* =========== TAB =========== */
+.tab__container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: var(--first-bg-color);
+}
+
+.tab__input {
+    display: none;
+}
+
+.tab__label {
+    position: relative;
+    top: -30px;
+    left: 30px;
+    margin-right: 20px;
+    font-weight: 600;
+    font-size: var(--medium-font-size);
+    color: var(--text-color-gray);
+    cursor: pointer;
+}
+
+.line {
+    position: absolute;
+    height: 2px;
+    background: var(--first-color);
+    width: 100px;
+    top: 0;
+    transition: .25s;
+}
+
+#tab1:checked ~ .line {
+    left: 23px;
+}
+#tab2:checked ~ .line {
+    left: 130px;
+}
+
+.tab__input:checked + label {
+    color: var(--title-color);
+}
+
+.content__container {
+    position: relative;
+}
+
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+#tab1:checked ~ .content__container #c1 {
+    opacity: 1;
+}
+#tab2:checked ~ .content__container #c2 {
+    opacity: 1;
 }
 
 
@@ -229,10 +297,6 @@ h1 {
         /* ========== FONT ========== */
         --h1-font-size: 1.2rem;
     }
-
-    /* .button {
-        padding: 0 var(--p-0-5);
-    } */
 
     /* =========== HEADER ========= */
     .header__inner, .main__inner {
