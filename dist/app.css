@@ -29,7 +29,8 @@
     --title-color: hsl(var(--hue), 4%, 10%);
     --text-color: hsl(var(--hue), 4%, 25%);
     --text-color-gray: hsl(var(--hue), 4%, 35%);
-    --bf-color: #fff;
+    --bg-color: #fff;
+    --dark-bg-color: hsl(0, 0%, 26%);
 
     /* ========== FONT ========== */
     --body-font: 'M PLUS 1p', sans-serif,'Poppins', sans-serif;
@@ -92,6 +93,7 @@ h1 {
 /* =========== HEADER ========== */
 .header {
     width: 100%;
+    background: var(--bg-color);
     /* margin-bottom: var(--mb-1); */
 }
 
@@ -154,6 +156,7 @@ h1 {
 .main__container {
     width: 100%;
     height: calc(100% - var(--header-height));
+    background: var(--bg-color);
     display: flex;
     flex-direction: column;
     row-gap: 1.2rem;
@@ -229,8 +232,15 @@ h1 {
 .tab__container {
     width: 100%;
     height: 100%;
-    position: relative;
     background-color: var(--first-bg-color);
+}
+
+.tab__inner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-left: var(--p-1-5);
+    padding-right: var(--p-1-5);
 }
 
 .tab__input {
@@ -238,11 +248,14 @@ h1 {
 }
 
 .tab__label {
+    width: 95px;
     position: relative;
     top: -30px;
-    left: 30px;
+    left: 0px;
+    text-align: center;
+    display: inline-block;
     margin-right: 20px;
-    font-weight: 600;
+    font-weight: var(--font-semi-bold);
     font-size: var(--medium-font-size);
     color: var(--text-color-gray);
     cursor: pointer;
@@ -252,16 +265,17 @@ h1 {
     position: absolute;
     height: 2px;
     background: var(--first-color);
-    width: 100px;
     top: 0;
     transition: .25s;
 }
 
 #tab1:checked ~ .line {
-    left: 23px;
+    left: 1.5rem;
+    width: 95px;
 }
 #tab2:checked ~ .line {
-    left: 130px;
+    left: calc(115px + 1.5rem);
+    width: 95px;
 }
 
 .tab__input:checked + label {
@@ -273,6 +287,8 @@ h1 {
 }
 
 .content {
+    width: 100%;
+    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
@@ -284,6 +300,34 @@ h1 {
 }
 #tab2:checked ~ .content__container #c2 {
     opacity: 1;
+}
+
+.card__container {
+    max-width: 400px;
+    background: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    min-height: 200px;
+    max-height: 370px;
+    overflow: hidden;
+}
+
+.card__header,
+.card__table-list {
+    display: flex;
+}
+
+.card__header-list:nth-child(1) {
+    width: 10%;
+}
+.card__header-list:nth-child(n+2) {
+    width: 30%;
+}
+
+.card__header-list {
+    text-align: center;
+    color: var(--text-color-gray);
+    font-size: var(--normal-font-size);
 }
 
 
@@ -299,7 +343,9 @@ h1 {
     }
 
     /* =========== HEADER ========= */
-    .header__inner, .main__inner {
+    .header__inner,
+    .main__inner,
+    .content__inner {
         padding-left: var(--p-0-75);
         padding-right: var(--p-0-75);
     }

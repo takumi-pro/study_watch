@@ -14,7 +14,7 @@ const client_id = process.env.CLIENT_ID
 
 app.get('/api/get', () => {
     const notion = new Client({
-        auth: 'secret_PF5H0dtfr1Z03DnlE0HNVntp7uXkcI3jMyBKDjvyXdh',
+        auth: notion_key,
     })
     notion.search().then((res) => {
         console.log(res)
