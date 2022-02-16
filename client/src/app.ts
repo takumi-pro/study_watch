@@ -1,10 +1,55 @@
-// import { Client } from '@notionhq/client'
 import 'remixicon/fonts/remixicon.css'
-import axios from 'axios'
 
-import { timerCountType, studyData } from './type/type'
+import { timerCountType, studyData, studyDatasType } from './type/type'
 import { chart } from './chart/chart'
 import { Chart } from './class/Chart'
+import studyRecordLocalStorage from './storage/localStorage'
+
+const columnChart = new Chart(chart)
+columnChart.draw()
+
+const studyDatas = []
+let isStart = false
+let startTime: number
+let intervalId: number
+let graphIntervalId: number
+let timeToStop = 0
+let inputText = ''
+
+const timerCount: timerCountType = {
+    hh: 0,
+    mm: 0,
+    ss: 0,
+    ms: 0,
+}
+
+// DOM生成後のイベントの登録
+const registerEvent = () => {
+    const deleteBtnList = document.querySelectorAll('.delete') as NodeList
+    const editBtnList = document.querySelectorAll('.edit') as NodeList
+
+    deleteBtnList.forEach((deleteBtn) => {
+        deleteBtn.addEventListener('click', deleteStudyRecord)
+    })
+    editBtnList.forEach((editBtn) => {
+        editBtn.addEventListener('click', editStudyRecord)
+    })
+}
+
+window.addEventListener('load', () => {
+    const localStudyDatas = studyRecordLocalStorage.getRecord()
+    if (!localStudyDatas) return
+
+    recordArea.innerHTML = ''
+
+    chart.series = []
+    localStudyDatas.map((studyData: studyData, index: number) => {
+        createRecordHtmlElement(studyData, index)
+        columnChart.addSeries(studyData.subject, studyData.studyTime * 5)
+    })
+    columnChart.redraw()
+    registerEvent()
+})
 
 // 要素の取得
 const startBtn = document.querySelector('.start') as HTMLButtonElement
@@ -13,52 +58,95 @@ const resetBtn = document.querySelector('.reset') as HTMLButtonElement
 const recordBtn = document.querySelector('.record') as HTMLButtonElement
 const inputArea = document.querySelector('.subject_name') as HTMLInputElement
 const authBtn = document.querySelector('.auth') as HTMLButtonElement
-const testBtn = document.querySelector('.test') as HTMLButtonElement
-const recordArea = document.querySelector('.record_area') as HTMLUListElement
-const chartArea = document.querySelector('.chart_area') as HTMLDivElement
+const editBtnList = document.querySelectorAll('.edit') as NodeList
+const deleteBtnList = document.querySelectorAll('.delete') as NodeList
+const recordArea = document.querySelector(
+    '.card__table-lists'
+) as HTMLUListElement
 const timer = document.querySelector('.timer') as HTMLDivElement
+const modal = document.querySelector('.modal') as HTMLButtonElement
+const modalOverlay = document.querySelector('.modal-overlay') as HTMLDivElement
+const modalBtn = document.querySelector('.modal_button') as HTMLButtonElement
 
-const columnChart = new Chart(chart)
-
-let isStart = false
-let startTime: number
-let intervalId: number
-let graphIntervalId: number
-let timeToStop = 0
-let inputText = ''
-const timerCount: timerCountType = {
-    hh: 0,
-    mm: 0,
-    ss: 0,
-    ms: 0,
+// modal
+const openModal = (ele: HTMLElement | HTMLDivElement) => {
+    ele.classList.add('open')
 }
-const totalMinute = 0
+const closeModal = (ele: HTMLElement | HTMLDListElement) => {
+    ele.classList.remove('open')
+}
 
-window.addEventListener('load', () => {
-    const studyDataListJson = localStorage.getItem('study_data')
-    if (!studyDataListJson) return
+const openLoginModal = () => {
+    openModal(modal)
+}
+const closeLoginModal = () => {
+    console.log('overlay')
+    closeModal(modal)
+}
+const openEditModal = (ele: HTMLDivElement) => {
+    openModal(ele)
+}
 
-    recordArea.innerHTML = ''
-
-    const studyDataList = JSON.parse(studyDataListJson)
-    chart.series = []
-    studyDataList.map((studyData: studyData, index: number) => {
-        createRecordHtmlElement(studyData)
-        columnChart.addSeries(studyData.subject, studyData.studyTime * 5)
-        columnChart.redraw()
-    })
-})
-
-function createRecordHtmlElement(studyData: studyData) {
+function createRecordHtmlElement(studyData: studyData, index: number) {
+    ;`<div class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-card">
+            <div class="modal-body">
+                <div class="modal-content">Content</div>
+            </div>
+        </div>
+    </div>`
+    // 要素生成
     const list = document.createElement('li')
-    const p = document.createElement('p')
-    const button = document.createElement('button')
+    const numberDiv = document.createElement('div')
+    const subjectDiv = document.createElement('div')
+    const studyTimeDiv = document.createElement('div')
+    const buttonsDiv = document.createElement('div')
+    const editButton = document.createElement('button')
+    const deleteButton = document.createElement('button')
+    const modal = document.createElement('div')
+    const modalOverlay = document.createElement('div')
+    const modalCard = document.createElement('div')
+    const modalContent = document.createElement('div')
+    const modalBody = document.createElement('div')
+    const modalInput = document.createElement('input')
+    const modalBtn = document.createElement('button')
 
-    button.classList.add('remove_button')
-    p.textContent = `${studyData.id} : ${studyData.subject} : ${studyData.studyTime}`
-    button.textContent = '削除'
-    list.appendChild(p)
-    list.appendChild(button)
+    // クラス追加
+    list.dataset.index = studyData.id.toString()
+    list.classList.add('card__table-list')
+    numberDiv.classList.add('table__cell', 'number')
+    subjectDiv.classList.add('table__cell', 'subject')
+    studyTimeDiv.classList.add('table__cell', 'study-time')
+    buttonsDiv.classList.add('table__cell', 'buttons')
+    editButton.classList.add('edit', 'button')
+    deleteButton.classList.add('delete', 'button')
+    modal.classList.add('modal', 'edit-modal')
+    modalOverlay.classList.add('modal-overlay', 'edit-overlay')
+    modalCard.classList.add('modal-card', 'edit-card')
+    modalContent.classList.add('modal-content', 'edit-content')
+    modalBody.classList.add('modal-body', 'edit-body')
+    modalInput.classList.add('modal-input')
+    modalBtn.classList.add('modal-button')
+    modalContent.append(modalInput)
+    modalBody.append(modalContent)
+    modalCard.append(modalBody)
+    modal.append(modalOverlay, modalCard)
+
+    editButton.textContent = '編集'
+    deleteButton.textContent = '削除'
+    buttonsDiv.appendChild(editButton)
+    buttonsDiv.appendChild(deleteButton)
+
+    numberDiv.textContent = `#${index + 1}`
+    subjectDiv.textContent = studyData.subject
+    studyTimeDiv.textContent = studyData.studyTime.toString()
+
+    list.appendChild(numberDiv)
+    list.appendChild(subjectDiv)
+    list.appendChild(studyTimeDiv)
+    list.appendChild(buttonsDiv)
+    list.appendChild(modal)
     recordArea.appendChild(list)
 }
 
@@ -69,16 +157,6 @@ function seriesIndex() {
     }
     return seriesIndex
 }
-
-//localStorage削除
-const clearData = document.querySelector('.clear') as HTMLButtonElement
-clearData.addEventListener('click', () => {
-    localStorage.clear()
-    location.reload()
-})
-
-//全ボタンを無効化
-// buttonDisabled(true)
 
 function countUp(difTime: number) {
     const hour = difTime / 3600000
@@ -133,13 +211,12 @@ function buttonDisabled(isDisabled: boolean): void {
 }
 
 function judgeRecordPush(): boolean {
-    const studyDataListJson = localStorage.getItem('study_data') as string
-    if (!studyDataListJson) return false
+    const localStudyDatas = studyRecordLocalStorage.getRecord()
+    if (!localStudyDatas) return false
 
-    const studyDataList = JSON.parse(studyDataListJson)
-    const studyDataListLength = studyDataList.length
+    const localStudyDatasLength = localStudyDatas.length
     const chartSeriesLength = chart.series.length
-    if (studyDataListLength === chartSeriesLength) {
+    if (localStudyDatasLength === chartSeriesLength) {
         return true
     }
     return false
@@ -201,26 +278,28 @@ function input(e: Event) {
 }
 
 function updateRecord() {
-    const studyDataList = localStorage.getItem('study_data')
-    console.log(studyDataList)
-    if (!studyDataList) return
+    const localStudyDatas = studyRecordLocalStorage.getRecord()
+    if (!localStudyDatas) return
+    console.log('update')
 
     recordArea.innerHTML = ''
-    JSON.parse(studyDataList).map((studyData: studyData, index: number) => {
-        createRecordHtmlElement(studyData)
+    localStudyDatas.map((studyData: studyData, index: number) => {
+        createRecordHtmlElement(studyData, index)
         columnChart.update(index, studyData.subject, studyData.studyTime * 5)
         columnChart.redraw()
+    })
+    const deleteBtnList = document.querySelectorAll('.delete') as NodeList
+    deleteBtnList.forEach((deleteBtn) => {
+        deleteBtn.addEventListener('click', deleteStudyRecord)
     })
 }
 
 function determinId() {
-    const studyDataListJson = localStorage.getItem('study_data')
-    if (!studyDataListJson) {
-        return 1
+    const localStudyDatas: studyDatasType = studyRecordLocalStorage.getRecord()
+    if (localStudyDatas && localStudyDatas.length > 0) {
+        return localStudyDatas.slice(-1)[0].id + 1
     }
-
-    const studyDataList = JSON.parse(studyDataListJson)
-    return studyDataList.slice(-1)[0].id + 1
+    return 1
 }
 
 function record() {
@@ -229,6 +308,7 @@ function record() {
         id: determinId(),
         subject: inputText,
         studyTime: mm * 60 + ss,
+        isDelete: false,
     }
     if (isStart) {
         return
@@ -242,27 +322,78 @@ function record() {
         return
     }
 
-    if (!localStorage.getItem('study_data')) {
-        localStorage.setItem('study_data', JSON.stringify([data]))
-    } else {
-        const dataListJson = localStorage.getItem('study_data')
-        if (!dataListJson) return
-
-        const dataList = JSON.parse(dataListJson)
-        dataList.push(data)
-        localStorage.setItem('study_data', JSON.stringify(dataList))
-    }
+    // 保存処理
+    studyDatas.push(data)
+    studyRecordLocalStorage.storeRecord([data])
     timeToStop = 0
-    updateRecord()
+    const localStudyDatas = studyRecordLocalStorage.getRecord()
+    if (!localStudyDatas) return
+
+    recordArea.innerHTML = ''
+    localStudyDatas.map((studyData: studyData, index: number) => {
+        createRecordHtmlElement(studyData, index)
+        console.log('studyData: ', studyData)
+        console.log('index :', index)
+    })
+    columnChart.update(
+        localStudyDatas.length - 1,
+        data.subject,
+        data.studyTime * 5
+    )
+    columnChart.redraw()
+    registerEvent()
     timerInit()
     inputInit()
     print('00:00:00:000')
 }
 
-function notionAuth() {
-    const url =
-        'https://api.notion.com/v1/oauth/authorize?owner=user&client_id=4f1f6973-b66f-47e6-9d04-db94afeebeb4&response_type=code'
-    window.location.href = url
+// function notionAuth() {
+//     const url =
+//         'https://api.notion.com/v1/oauth/authorize?owner=user&client_id=4f1f6973-b66f-47e6-9d04-db94afeebeb4&response_type=code'
+//     window.location.href = url
+// }
+
+function editStudyRecord(e: Event) {
+    if (!(e.target instanceof HTMLButtonElement)) return
+
+    const list = e.target.closest('.card__table-list') as HTMLDivElement
+    if (!list) return
+    if (!list.lastChild) return
+
+    const editModal = list.lastChild as HTMLDivElement
+    const editModalOverlay = editModal.firstChild as HTMLDivElement
+    openEditModal(editModal)
+    editModalOverlay.addEventListener('click', () => {
+        closeModal(editModal)
+    })
+}
+
+function deleteStudyRecord(e: Event) {
+    if (!(e.target instanceof HTMLButtonElement)) return
+
+    const isDelete = confirm('本当に削除しますか？')
+    if (isDelete) {
+        console.log('delete')
+        const cardTableLists = e.target.closest(
+            '.card__table-list'
+        ) as HTMLLIElement
+        const deleteId = Number(cardTableLists?.dataset.index)
+        const hashNumber = Number(
+            cardTableLists?.firstChild?.textContent?.slice(1)
+        )
+        studyRecordLocalStorage.deleteRecord(deleteId)
+
+        const localStudyDatas = studyRecordLocalStorage.getRecord()
+        if (!localStudyDatas) return
+
+        recordArea.innerHTML = ''
+        localStudyDatas.map((studyData: studyData, index: number) => {
+            createRecordHtmlElement(studyData, index)
+        })
+        columnChart.removeSeries(hashNumber - 1)
+        columnChart.redraw()
+        registerEvent()
+    }
 }
 
 inputArea.addEventListener('input', input)
@@ -270,8 +401,11 @@ startBtn.addEventListener('click', start)
 stopBtn.addEventListener('click', stop)
 resetBtn.addEventListener('click', reset)
 recordBtn.addEventListener('click', record)
-authBtn.addEventListener('click', notionAuth)
-testBtn.addEventListener('click', async () => {
-    const res = await axios.get('http://localhost:8080/api/get')
-    console.log(res)
+authBtn.addEventListener('click', openLoginModal)
+modalOverlay.addEventListener('click', closeLoginModal)
+editBtnList.forEach((editBtn) => {
+    editBtn.addEventListener('click', editStudyRecord)
+})
+deleteBtnList.forEach((deleteBtn) => {
+    deleteBtn.addEventListener('click', deleteStudyRecord)
 })

@@ -25,6 +25,11 @@ export class Chart {
         })
     }
 
+    removeSeries(index: number) {
+        this.chart.series[index].remove()
+        console.log(this.chart.series)
+    }
+
     update(index: number, name: string, data: number) {
         this.chart.series[index].update(
             {

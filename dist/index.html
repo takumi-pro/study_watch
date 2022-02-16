@@ -5,37 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./app.css">
-    <title>Document</title>
-    <style>
-        .timer, .button_container {
-            display: flex;
-            column-gap: 0.3rem;
-            justify-content: center;
-        }
-        .toggle {
-            position: relative;
-            width: 45px;
-        }
-        .toggle_button {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        .stop {
-            display: none;
-        }
-        .subject {
-            display: flex;
-            justify-content: center;
-        }
-        .record_area p {
-            text-align: center;
-        }
-        .record_container {
-            display: flex;
-            justify-content: space-around;
-        }
-    </style>
+    <title>STUDY WATCH</title>
 </head>
 <body>
     <header class="header">
@@ -56,11 +26,19 @@
                 </li>
             </ul>
         </nav>
+        <div class="modal">
+            <div class="modal-overlay"></div>
+            <div class="modal-card">
+                <div class="modal-body">
+                    <div class="modal-content">content</div>
+                </div>
+            </div>
+        </div>
     </header>
     <main class="main__container">
         <div class="record__container">
             <div class="input__container">
-                <input placeholder="科目を入力" type="text" class="input">
+                <input placeholder="科目を入力" type="text" class="input subject_name">
             </div>
             <div class="timer__container">
                 <div class="timer">
@@ -101,34 +79,46 @@
                                 </div>
                                 <div class="card__table">
                                     <ul class="card__table-lists">
-                                        <li class="card__table-list">
-                                            <div class="card__header-list">#1</div>
-                                            <div class="card__header-list">基本情報</div>
-                                            <div class="card__header-list">112</div>
-                                            <div class="card__header-list"></div>
+                                        <!-- <li class="card__table-list">
+                                            <div class="table__cell number">#1</div>
+                                            <div class="table__cell subject">基本情報</div>
+                                            <div class="table__cell study-time">112</div>
+                                            <div class="table__cell buttons">
+                                                <button class="edit button">編集</button>
+                                                <button class="delete button">削除</button>
+                                            </div>
                                         </li>
                                         <li class="card__table-list">
-                                            <div class="card__header-list">#2</div>
-                                            <div class="card__header-list">応用情報</div>
-                                            <div class="card__header-list">学習時間(分)</div>
-                                            <div class="card__header-list"></div>
+                                            <div class="table__cell number">#2</div>
+                                            <div class="table__cell subject">応用情報</div>
+                                            <div class="table__cell study-time">学習時間(分)</div>
+                                            <div class="table__cell buttons">
+                                                <button class="edit button">編集</button>
+                                                <button class="delete button">削除</button>
+                                            </div>
                                         </li>
                                         <li class="card__table-list">
-                                            <div class="card__header-list">#3</div>
-                                            <div class="card__header-list">ネットワーク</div>
-                                            <div class="card__header-list">学習時間(分)</div>
-                                            <div class="card__header-list"></div>
+                                            <div class="table__cell number">#3</div>
+                                            <div class="table__cell subject">ネットワーク</div>
+                                            <div class="table__cell study-time">学習時間(分)</div>
+                                            <div class="table__cell buttons">
+                                                <button class="edit button">編集</button>
+                                                <button class="delete button">削除</button>
+                                            </div>
                                         </li>
                                         <li class="card__table-list">
-                                            <div class="card__header-list">#4</div>
-                                            <div class="card__header-list">コンピュータアーキテクチャ</div>
-                                            <div class="card__header-list">学習時間(分)</div>
-                                            <div class="card__header-list"></div>
-                                        </li>
+                                            <div class="table__cell number">#4</div>
+                                            <div class="table__cell subject">コンピュータアーキテクチャ</div>
+                                            <div class="table__cell study-time">学習時間(分)</div>
+                                            <div class="table__cell buttons">
+                                                <button class="edit button">編集</button>
+                                                <button class="delete button">削除</button>
+                                            </div>
+                                        </li> -->
                                     </ul>
                                 </div>
                             </div>
-                            <div class="chart__container"></div>
+                            <div id="chart__area"></div>
                         </div>
                     </div>
                     <div class="content" id="c2">

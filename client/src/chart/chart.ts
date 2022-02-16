@@ -8,16 +8,16 @@ const date = new Date()
 
 export const chart = new (Highcharts as any).chart({
     chart: {
-        renderTo: 'chart_area',
+        renderTo: 'chart__area',
         type: 'column',
     },
     xAxis: {
         categories: [`${date.getMonth() + 1}月${date.getDate()}日`],
     },
     yAxis: {
-        softMax: 110,
+        softMax: 25,
         title: {
-            text: 'number',
+            text: '学習時間(分)',
         },
     },
     series: [{ name: '', data: [0] }],

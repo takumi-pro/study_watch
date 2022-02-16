@@ -9,4 +9,12 @@ export type studyData = {
     id: number
     subject: string
     studyTime: number
+    isDelete: boolean
 }
+
+export type studyDatasType = {
+    id: number
+    subject: string
+    studyTime: number
+    isDelete: boolean
+}[]
